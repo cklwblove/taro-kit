@@ -8,20 +8,20 @@ export const HTTP_STATUS = {
   BAD_GATEWAY: 502,
   SERVICE_UNAVAILABLE: 503,
   GATEWAY_TIMEOUT: 504
-}
+};
 
 // promise status
-export const SUCCESS = { success:'success'}
-export const FAIL = { fail:'fail'}
-export const COMPLETE = { complete:'complete'}
+export const SUCCESS = {success: 'success'};
+export const FAIL = {fail: 'fail'};
+export const COMPLETE = {complete: 'complete'};
 
 export const PROMISE_STATUS = {
   success: 'success',
   fail: 'fail',
   complete: 'complete'
-}
+};
 
 export const RESULT_STATUS = {
-  SUCCESS:0,
+  SUCCESS: 0,
   SIGNATURE_FAILED: 1000  // 签名失败
-}
+};

@@ -1,11 +1,11 @@
-import Taro, { Component } from '@tarojs/taro'
-import { View, Button, Text } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import Taro, { Component } from '@tarojs/taro';
+import { View } from '@tarojs/components';
+import { connect } from '@tarojs/redux';
 
 // import { add, minus, asyncAdd, list } from '../../actions/counter'
-import counterAction from '../../actions/counter'
+import counterAction from '../../actions/counter';
 
-import './index.styl'
+import './style.less';
 
 
 // @connect(({ counter }) => ({
@@ -40,54 +40,63 @@ class Index extends Component {
 
   config = {
     navigationBarTitleText: '首页'
-  }
+  };
+
   constructor(props) {
-    super(props)
+    super(props);
     // this.state = { date: new Date() }
     // let params = {
     //   page: 2, per_page: 2
     // }
     this.state = {
-      page: 1, per_page: 10
-    }
-    if (Object.keys(props).length === 0) return
-    counterAction.list(this.state)
+      page: 1,
+      per_page: 10
+    };
+    if (Object.keys(props).length === 0) return;
+    counterAction.list(this.state);
   }
+
   componentWillReceiveProps(nextProps) {
-    console.log(this.props, nextProps)
+    console.log(this.props, nextProps);
   }
+
   componentWillMount() {
     // this.props.getList(this.state)
-    counterAction.list(this.state)
+    counterAction.list(this.state);
   }
+
   componentWillUnmount() {
 
   }
 
-  componentDidShow() { }
+  componentDidShow() {
+  }
 
-  componentDidHide() { }
+  componentDidHide() {
+  }
 
   onShareAppMessage() {
     return {
       title: 'taro issue',
       path: '/pages/index/index',
-      imageUrl: '../../common/image/share.png'
-    }
+      imageUrl: '../../assets/img/share.png'
+    };
   }
+
   onReachBottom() {
     // 触发到底部
     this.setState({
       page: this.state.page + 1
-    })
-    const { page, per_page } = this.state
+    });
+    const {page, per_page} = this.state;
     let params = {
       page: this.state.page + 1, per_page: per_page
-    }
-    counterAction.list(params)
+    };
+    counterAction.list(params);
   }
+
   render() {
-    if(!this.props.getList) return
+    if (!this.props.getList) return;
     return (
       <View className='index'>
         <View className='data'>taro issue list</View>
@@ -103,17 +112,19 @@ class Index extends Component {
                   </View>
                 </View>
                 <View className='rightImage'><Image calssName='img' src={item.image_url} /></View>
-              </View>
+              </View>;
             })
           }
         </View>
-      </View >
-    )
+      </View>
+    );
   }
 }
+
 const mapStateToProps = (state, ownProps) => {
   return {
     getList: state.counter.list
-  }
-}
-export default connect(mapStateToProps)(Index)
+  };
+};
+
+export default connect(mapStateToProps)(Index);

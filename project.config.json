@@ -2,7 +2,7 @@
 	"miniprogramRoot": "dist/",
 	"projectname": "taro-kit",
 	"description": "demo",
-	"appid": "wx8566afef50e5f76b",
+	"appid": "wxdc80fd3848417ff5",
 	"setting": {
 		"urlCheck": false,
 		"es6": false,
@@ -11,5 +11,7 @@
 		"newFeature": true
 	},
 	"compileType": "miniprogram",
+	"simulatorType": "wechat",
+	"simulatorPluginLibVersion": {},
 	"condition": {}
 }

@@ -1,42 +1,44 @@
-import Taro, { Component } from '@tarojs/taro'
-import { View, Button, Text } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import Taro, { Component } from '@tarojs/taro';
+import { View, Button, Text } from '@tarojs/components';
+import { connect } from '@tarojs/redux';
 
-import { add, minus, asyncAdd } from '../../actions/counter'
+import { add, minus, asyncAdd } from '../../actions/counter';
 
-import './index.styl'
+import './style.less';
 
-
-@connect(({ counter }) => ({
+@connect(({counter}) => ({
   counter
 }), (dispatch) => ({
-  add () {
-    dispatch(add())
+  add() {
+    dispatch(add());
   },
-  dec () {
-    dispatch(minus())
+  dec() {
+    dispatch(minus());
   },
-  asyncAdd () {
-    dispatch(asyncAdd())
+  asyncAdd() {
+    dispatch(asyncAdd());
   }
 }))
 class Me extends Component {
 
-    config = {
+  config = {
     navigationBarTitleText: '我的页面'
+  };
+
+  componentWillReceiveProps(nextProps) {
+    console.log(this.props, nextProps);
   }
 
-  componentWillReceiveProps (nextProps) {
-    console.log(this.props, nextProps)
+  componentWillUnmount() {
   }
 
-  componentWillUnmount () { }
+  componentDidShow() {
+  }
 
-  componentDidShow () { }
+  componentDidHide() {
+  }
 
-  componentDidHide () { }
-
-  render () {
+  render() {
     return (
       <View className='index'>
         <Button className='add_btn' onClick={this.props.add}>+</Button>
@@ -45,8 +47,8 @@ class Me extends Component {
         <View><Text>{this.props.counter.num}</Text></View>
         <View><Text>Hello, World</Text></View>
       </View>
-    )
+    );
   }
 }
 
-export default Me
+export default Me;

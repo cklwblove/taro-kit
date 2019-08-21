@@ -3,11 +3,11 @@ export const indexOf = (haystack, needle) => {
     if (haystack[i] === needle) return i;
   }
   return -1;
-}
+};
 
 export const stringify = (obj, replacer, spaces, cycleReplacer) => {
   return JSON.stringify(obj, serializer(replacer, cycleReplacer), spaces);
-}
+};
 
 export const stringifyError = (value) => {
   var err = {
@@ -23,7 +23,7 @@ export const stringifyError = (value) => {
   }
 
   return err;
-}
+};
 
 export const serializer = (replacer, cycleReplacer) => {
   var stack = [];
@@ -55,7 +55,7 @@ export const serializer = (replacer, cycleReplacer) => {
       ? value instanceof Error ? stringifyError(value) : value
       : replacer.call(this, key, value);
   };
-}
+};
 
 // try {
 //   throw new Error("Whoops!");

@@ -3,7 +3,7 @@ import { View, Image } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
 
 // import { add, minus, asyncAdd, list } from '../../actions/counter'
-import counterAction from '../../actions/counter';
+import counterAction from '@/actions/counter';
 
 import './style.less';
 

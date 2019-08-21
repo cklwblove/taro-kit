@@ -13,7 +13,7 @@ const checkStatusAndFilter = (response) => {
   }
   // 除此之外的错所有遍历上面的错误信息抛出异常
   const errorText = CODE_MESSAGE[response.statusCode] || response.errMsg;
-  
+
   Taro.showToast({
     title: errorText,
     mask: true,

@@ -1,4 +1,4 @@
-import { getCurrentPageUrl, formatTime } from './common';
+import { formatTime } from './index';
 // var fundebug = require('../libs/fundebug.0.8.2.min.js');
 /**
  *
@@ -24,5 +24,4 @@ export const logError = (name, action, info) => {
   if (typeof info === 'object') {
     info = JSON.stringify(info);
   }
-
-
+};

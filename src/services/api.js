@@ -1,7 +1,28 @@
 import Taro from '@tarojs/taro';
-import { HTTP_STATUS } from '@/constants/status';
+import { HTTP_STATUS, CODE_MESSAGE } from '@/constants/status';
 import { baseUrl } from './config';
 import { logError } from '@/utils';
+
+// 检测请求状态
+const checkStatusAndFilter = (response) => {
+  if (response.statusCode >= 200 && response.statusCode < 300) {
+    if (response.statusCode === 200 || response.statusCode === 304) {
+      return response.data;
+    }
+    return response;
+  }
+  // 除此之外的错所有遍历上面的错误信息抛出异常
+  const errorText = CODE_MESSAGE[response.statusCode] || response.errMsg;
+  
+  Taro.showToast({
+    title: errorText,
+    mask: true,
+    icon: 'none',
+    duration: 2000
+  });
+
+  return Promise.reject(response);
+};
 
 export default {
   baseOptions({
@@ -10,47 +31,33 @@ export default {
     header = {'content-type': 'application/json'},
     method = 'GET'
   }) {
-    url += `?timestamp=${timestamp}`;
-    const interceptor = function (chain) {
-      const requestParams = chain.requestParams;
-      let {url, data, method} = requestParams;
-      console.log(`http ${method || 'GET'} --> ${url} data: `, data);
-      requestParams.url = url.indexOf('http') !== -1 ? url : baseUrl + url;
 
-      return chain.proceed(requestParams)
-        .then(res => {
-          console.log(`http <-- ${url} result:`, res);
-          if (res.statusCode === HTTP_STATUS.NOT_FOUND) {
-            return logError('api', '请求资源不存在');
-          } else if (res.statusCode === HTTP_STATUS.BAD_GATEWAY) {
-            return logError('api', '服务端出现了问题');
-          } else if (res.statusCode === HTTP_STATUS.FORBIDDEN) {
-            let path = getCurrentPageUrl();
-            if (path !== 'pages/index/index') {
-              Taro.navigateTo({
-                url: '/pages/index/index'
-              });
-            }
-            return logError('api', '没有权限访问');
-          } else if (res.statusCode === HTTP_STATUS.AUTHENTICATE) {
-            let path = getCurrentPageUrl();
-            if (path !== 'pages/index/index') {
-              Taro.navigateTo({
-                url: '/pages/index/index'
-              });
-            }
-            return logError('api', '需要鉴权');
-          } else if (res.statusCode === HTTP_STATUS.SUCCESS) {
-            return res.data;
-          }
-        }).catch((e) => {
-          logError('api', '请求接口出现问题', e);
-        });
+    const defaultOptions = {
+      url: url.indexOf('http') !== -1 ? url : baseUrl + url,
+      header,
+      method,
+      data
     };
 
-    Taro.addInterceptor(interceptor);
-
-    return Taro.request({data, url, method, header});
+    return Taro.request(defaultOptions)
+      .then(checkStatusAndFilter)
+      .then(res => {
+        console.log(`http <-- ${url} result:`, res);
+        // 结合具体接口返回参数做处理
+        return res;
+      }).catch((errRes) => {
+        if (errRes.statusCode === HTTP_STATUS.AUTHENTICATE ||
+          errRes.statusCode === HTTP_STATUS.FORBIDDEN) {
+          let path = getCurrentPageUrl();
+          if (path !== 'pages/index/index') {
+            Taro.navigateTo({
+              url: '/pages/index/index'
+            });
+          }
+          return logError('api', '需要鉴权');
+        }
+        logError('api', '请求接口出现问题', errRes);
+      });
   },
   get(url, data = '') {
     let option = {url, data};

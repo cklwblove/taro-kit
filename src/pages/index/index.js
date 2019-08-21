@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro';
-import { View } from '@tarojs/components';
+import { View, Image } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
 
 // import { add, minus, asyncAdd, list } from '../../actions/counter'
@@ -111,7 +111,9 @@ class Index extends Component {
                     <View className='comment'>{item.username}</View>
                   </View>
                 </View>
-                <View className='rightImage'><Image calssName='img' src={item.image_url} /></View>
+                <View className='rightImage'>
+                  <Image calssName='img' src={item.user.avatar_url} />
+                </View>
               </View>;
             })
           }
